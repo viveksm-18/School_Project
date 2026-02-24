@@ -5233,26 +5233,37 @@
 
         // ========== AUTHENTICATION FUNCTIONS ==========
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            google.script.run
-                .withSuccessHandler(function(response) {
-                    if (response && response.success) {
-                        currentUser = response.user;
-                        showMainApp();
-                    } else {
-                        showLoginError(response ? response.message : 'Login failed');
-                    }
-                })
-                .withFailureHandler(function(error) {
-                    showLoginError('Login failed: ' + error.message);
-                })
-                .authenticateUser(username, password);
-        });
+       document.getElementById('loginForm').addEventListener('submit', function(e) {
 
+  e.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  fetch("https://script.google.com/macros/s/AKfycbwnz0SZSfGGfCWDvDT9wk0XE8xYBxsOurZzDiF9jC4CkOUL04kdCGPKa0AcvqNWnUdZ/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: "login",
+      username: username,
+      password: password
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    if(data.status === "success") {
+      window.location.href = "scan.html";
+    } else {
+      alert("Invalid Login");
+    }
+
+  })
+  .catch(err => alert("Server Error"));
+
+});
         document.getElementById('staffLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const staffId = document.getElementById('staffId').value.trim();
@@ -12910,4 +12921,5 @@ function checkLoanInSalarySheet(staffId, month, year) {
 }
     </script>
 </body>
+
 </html>
