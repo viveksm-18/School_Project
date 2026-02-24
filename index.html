@@ -5233,23 +5233,27 @@
 
         // ========== AUTHENTICATION FUNCTIONS ==========
 
-       document.getElementById('loginForm').addEventListener('submit', function(e) {
+       
+
+document.getElementById("loginForm")
+.addEventListener("submit", function(e) {
 
   e.preventDefault();
 
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
+  const username =
+  document.getElementById("username").value;
 
-  fetch("https://script.google.com/macros/s/AKfycbzjci-fpVkXN2BdnV7EOn2mPSTVQqAtzV_mmlh1HR58aDWLy5_FxN6jqUvITkGjieTK/exec", {
+  const password =
+  document.getElementById("password").value;
+
+  const formData = new FormData();
+  formData.append("action", "login");
+  formData.append("username", username);
+  formData.append("password", password);
+
+  fetch("https://script.google.com/macros/s/AKfycbyghgVDbiEbHFnKztamqTZDjt5BpkfGdwT97nx2BLaHlsk85ZLIc8JP_k4DVLaGzpo6/exec", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      action: "login",
-      username: username,
-      password: password
-    })
+    body: formData
   })
   .then(res => res.json())
   .then(data => {
@@ -5264,6 +5268,9 @@
   .catch(err => alert("Server Error"));
 
 });
+
+
+        
         document.getElementById('staffLoginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const staffId = document.getElementById('staffId').value.trim();
@@ -12923,5 +12930,6 @@ function checkLoanInSalarySheet(staffId, month, year) {
 </body>
 
 </html>
+
 
 
